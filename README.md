@@ -2,7 +2,7 @@
 # Meetup Clone
 <!--!!END -->
 <!--!!ADD -->
-<!-- # `<name of application here>` -->
+<!-- # `LinkMe` -->
 <!--!!END_ADD -->
 
 ## Database Schema Design
