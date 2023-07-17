@@ -25,11 +25,6 @@ module.exports = (sequelize, DataTypes) => {
     about: {
       allowNull: false,
       type: DataTypes.STRING,
-      // validate: {
-      //   isLong(value){
-      //     if(value.length < 30) throw new Error()
-      //   }
-      // }
     },
     type: {
       allowNull: false,
