@@ -1,24 +1,30 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class EventImages extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+  class EventImage extends Model {
+
     static associate(models) {
       // define association here
+      EventImage.belongsTo(models.Event, {foreignKey: 'eventId'})
+
     }
   }
-  EventImages.init({
-    url: DataTypes.STRING,
-    preview: DataTypes.BOOLEAN
+  EventImage.init({
+    eventId: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
+    url: {
+      allowNull:false,
+      type:DataTypes.STRING
+    },
+    preview: {
+      allowNull: false,
+      type:DataTypes.BOOLEAN
+    }
   }, {
     sequelize,
-    modelName: 'EventImages',
+    modelName: 'EventImage',
   });
-  return EventImages;
+  return EventImage;
 };

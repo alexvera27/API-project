@@ -1,5 +1,11 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
+
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;
+}
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Events', {
@@ -9,17 +15,29 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      venueId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: { model: 'Venues', key: 'id'},
+        onDelete: 'CASCADE'
+      },
+      groupId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: { model: 'Groups', key: 'id'},
+        onDelete: 'CASCADE'
+      },
       name: {
         allowNull: false,
         type: Sequelize.STRING
       },
       description: {
         allowNull: false,
-        type: Sequelize.TEXT
+        type: Sequelize.STRING
       },
       type: {
         allowNull: false,
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM('In person')
       },
       capacity: {
         allowNull: false,
@@ -27,7 +45,7 @@ module.exports = {
       },
       price: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.DECIMAL
       },
       startDate: {
         allowNull: false,

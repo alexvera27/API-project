@@ -1,26 +1,47 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Venue extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+
     static associate(models) {
       // define association here
+      Venue.belongsTo(models.Group, {foreignKey: 'groupId'})
+      Venue.hasMany(models.Event, {foreignKey: 'venueId'})
     }
   }
   Venue.init({
-    address: DataTypes.STRING,
-    city: DataTypes.STRING,
-    state: DataTypes.STRING,
-    lat: DataTypes.DECIMAL,
-    lng: DataTypes.DECIMAL,
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
+    groupId: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
+    address: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    city: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    state: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    lat: {
+      allowNull: false,
+      type: DataTypes.FLOAT,
+      validate: {
+        min:-90,
+        max:90,
+      }
+    },
+    lng: {
+      allowNull: false,
+      type: DataTypes.FLOAT,
+      validate: {
+        min:-180,
+        max:180,
+      }
+    },
   }, {
     sequelize,
     modelName: 'Venue',

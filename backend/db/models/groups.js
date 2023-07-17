@@ -1,29 +1,53 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { error } = require('console');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Groups extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+  class Group extends Model {
+
     static associate(models) {
       // define association here
+      Group.belongsTo(models.User, {foreignKey: 'organizerId'})
+      Group.hasMany(models.Membership, {foreignKey: 'groupId'})
+      Group.hasMany(models.GroupImage, {foreignKey: 'groupId'})
+      Group.hasMany(models.Venue, {foreignKey: 'groupId'})
+      Group.hasMany(models.Event, {foreignKey: 'groupId'})
+
     }
   }
-  Groups.init(
-    {
-      name: DataTypes.STRING,
-      about: DataTypes.TEXT,
-      type: DataTypes.ENUM,
-      private: DataTypes.BOOLEAN,
-      city: DataTypes.STRING,
-      state: DataTypes.STRING
-    }, {
+  Group.init({
+    organizerId: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
+    name: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    about: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      // validate: {
+      //   isLong(value){
+      //     if(value.length < 30) throw new Error()
+      //   }
+      // }
+    },
+    type: {
+      allowNull: false,
+      type: DataTypes.ENUM('In person')
+    },
+    private: DataTypes.BOOLEAN,
+    city: {
+      allowNull: false,
+      type:DataTypes.STRING
+    },
+    state: {
+      allowNull: false,
+      type:DataTypes.STRING
+    },
+  }, {
     sequelize,
-    modelName: 'Groups',
+    modelName: 'Group',
   });
-  return Groups;
+  return Group;
 };
