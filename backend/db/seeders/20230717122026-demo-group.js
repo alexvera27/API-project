@@ -38,7 +38,6 @@ module.exports = {
         private: true
       }
     ], {});
-
   },
 
   async down (queryInterface, Sequelize) {
