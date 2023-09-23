@@ -49,7 +49,7 @@ router.get('/:groupId/events', async (req, res) => {
     },
     attributes: ['id', 'name', 'city', 'state']
   })
-  if (!group) throw new Error("Group couldn't be found")
+  if (!group) throw new Error("Cannot find group")
 
   let Events = await Event.findAll({
     where: {
@@ -92,7 +92,7 @@ router.get('/:groupId/events', async (req, res) => {
 
 router.get('/:groupId/venues', requireAuth, async (req, res) => {
   const group = await Group.findByPk(req.params.groupId)
-  if (!group) throw new Error("Group couldn't be found")
+  if (!group) throw new Error("Group cannot be found")
   const member = await Membership.findAll({
     where: {
       userId: req.user.id,
@@ -457,7 +457,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
     }
   })
   if (!group) throw new Error("Group couldn't be found")
-  if(!ownerCheck) throw new Error("YOu are not a owner")
+  if(!ownerCheck) throw new Error("You are not a owner")
   if(ownerCheck.status === 'co-host' && status === 'co-host') throw new Error("You are not a owner")
   if (status === 'pending') throw new Error("Membership is pending")
   if (!member) throw new Error("Member not found in group")
@@ -482,7 +482,7 @@ router.put('/:groupId', requireAuth, async (req, res) => {
   if (!group) throw new Error("Group couldn't be found")
   if (name.length > 50) throw new Error("Name should be less than 50 characters")
   if (about.length < 20) throw new Error("Should be more than 20 characters")
-  if (type !== 'In person') throw new Error("Should be in person")
+  if (type !== 'Online' && type !== 'In person') throw new Error("Type must be 'Online' or 'In person'")
   if (typeof private !== 'boolean') throw new Error('ERROR')
 
   if (req.user.id !== group.organizerId) throw new Error('You must be owner of group')
@@ -531,7 +531,7 @@ router.delete('/:groupId/membership', requireAuth, async (req, res) => {
 router.delete('/:groupId', requireAuth, async (req, res) => {
   const group = await Group.findByPk(req.params.groupId);
   if (!group) throw new Error("Group couldn't be found")
-  if (req.user.id !== group.organizerId) throw new Error('YOu must be owner of group')
+  if (req.user.id !== group.organizerId) throw new Error('You must be owner of group')
 
   group.destroy();
 

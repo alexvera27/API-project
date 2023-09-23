@@ -15,30 +15,31 @@ module.exports = {
         name: 'BMW Group',
         about: 'All BMW fans tap in',
         type: 'In person',
+        private: false,
         city: 'Jersey City',
         state: 'New Jersey',
-        private: false
       },
       {
         organizerId: 2,
         name: 'JDM Group',
         about: 'Fans of JDM cars join us in appreciating brands like Nissan',
         type: 'In person',
+        private: false,
         city: 'Bayonne',
         state: 'New Jersey',
-        private: false,
       },
       {
         organizerId: 3,
         name: 'Honda Lovers',
         about: 'If you love Hondas, you will love this group',
         type: 'In person',
+        private: true,
         city: 'Union City',
         state: 'New Jersey',
-        private: true
       }
     ], {});
   },
+
 
   async down (queryInterface, Sequelize) {
     options.tableName = 'Groups';

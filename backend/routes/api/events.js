@@ -110,7 +110,7 @@ router.get('/', async (req, res) => {
   if (Number(page) < 1) throw new Error("more than or equal to 1")
   if (Number(size) < 1) throw new Error("morethan or equal to 1")
   if (typeof name !== 'string' && name) throw new Error("Name should be string")
-  if ((type !== 'In person') && type) throw new Error("Should be in person")
+  if ((type !== 'Online' && type !== 'In person') && type) throw new Error("Should be 'Online' or 'In person'")
   if (startDate) {
     if ((startDate.parse === NaN) && startDate) throw new Error("Bad start date")
   }
@@ -178,7 +178,7 @@ router.get('/', async (req, res) => {
     event.Venue = place
     event.Group = group
     event.numAttending = members.length
-    event.previewImage = image.url
+    event.previewImage = image
     return event
   }))
   console.log(eventArray);
@@ -263,7 +263,9 @@ router.post('/:eventId/images', requireAuth, async (req, res) => {
 })
 
 router.put('/:eventId/attendance', requireAuth, async (req, res) => {
+  // const currId = req.user.id;
   const { userId, status } = req.body;
+  console.log(userId);
   if (status === 'pending') throw new Error('Pending approval')
   const test = await Event.findByPk(req.params.eventId)
   if (!test) throw new Error("Event couldn't be found")
@@ -284,7 +286,7 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
   })
 
   if(!ownerCheck){
-    throw new Error("You are not owner")
+    throw new Error("You are not an owner")
   }
 
   attendance.status = status
@@ -308,7 +310,7 @@ router.put('/:eventId', requireAuth, async (req, res) => {
   const venue = await Venue.findByPk(venueId)
   if (!venue) throw new Error("Venue does not exist")
   if (name.length < 5) throw new Error("Name should be 5 characters or more")
-  if (type !== 'In person') throw new Error("Should be in person")
+  if (type !== 'Online' && type !== 'In person') throw new Error("Should be 'Online' or 'In person'")
   if (typeof capacity !== 'number') throw new Error('Should be a number')
   if (typeof price !== 'number') throw new Error('Should be a number')
   if (!description) throw new Error("Add a description")
@@ -338,6 +340,7 @@ router.put('/:eventId', requireAuth, async (req, res) => {
     },
     attributes: ['id']
   });
+  // console.log(groups);
   const id = groups.map(id => id.get('id'));
   if (!id.length) throw new Error("Bad request")
 

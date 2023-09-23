@@ -18,13 +18,9 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
       status: { [Op.in]: ['co-host', 'host'] }
     }
   })
-
   if(!membership) throw new Error("Not allowed to delete image")
-
   image.destroy()
-
   return res.json({message: "Deleted"})
-
 })
 
 module.exports = router;
