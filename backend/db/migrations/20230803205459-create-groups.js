@@ -1,11 +1,13 @@
 'use strict';
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;
 }
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Groups', {
+    return queryInterface.createTable("Groups", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,35 +15,35 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       organizerId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
         references: { model: 'Users', key: 'id'},
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
-        type: Sequelize.INTEGER,
-        allowNull: false
+        onDelete: 'CASCADE'
       },
       name: {
-        type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        type: Sequelize.STRING
       },
       about: {
-        type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        type: Sequelize.STRING
       },
       type: {
-        type: Sequelize.ENUM('Online', 'In person'),
-        allowNull: false
+        allowNull: false,
+        type: Sequelize.ENUM('Online', 'In person')
       },
       private: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+        type: Sequelize.BOOLEAN
       },
       city: {
-        type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        type: Sequelize.STRING
       },
       state: {
-        type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -53,7 +55,7 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
-    }, options);
+    });
   },
   down: async (queryInterface, Sequelize) => {
     options.tableName = "Groups";
