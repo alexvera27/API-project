@@ -9,6 +9,8 @@ import App from './App';
 
 import configureStore from './store';
 
+import { restoreCSRF, csrfFetch } from './store/csrf';
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
@@ -19,6 +21,9 @@ ReactDOM.render(
 const store = configureStore();
 
 if (process.env.NODE_ENV !== 'production') {
+  restoreCSRF();
+
+  window.csrfFetch = csrfFetch;
   window.store = store;
 }
 
